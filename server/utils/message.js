@@ -7,6 +7,7 @@ var generateMessage = (from, text) => {
 };
 
 var generateLocationMessage = (from, lat, long) => {
+
     return {
         from,
         url: `https://google.com/maps?q=${lat},${long}`,
