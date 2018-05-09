@@ -12,10 +12,14 @@ var server = http.createServer(app);
 var io = socketIO(server);
 
 app.use(express.static(publicPath));
-
+io.sockets.countUser = 0;
 io.on('connection', (socket) => {
     console.log('New user connected!');
+    io.sockets.countUser += 1;
 
+    io.sockets.emit('countUser', {
+        count: io.sockets.countUser,
+    });
     // socket.emit('newMessage', {
     //     from: 'Son',
     //     text: 'see you then',
@@ -47,7 +51,11 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
+        io.sockets.countUser -= 1;
         console.log('User was disconnected!');
+        io.sockets.emit('countUser', {
+            count: io.sockets.countUser,
+        });
     });
 });
 
